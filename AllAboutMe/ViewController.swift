@@ -23,7 +23,14 @@ class ViewController: UIViewController, UITextFieldDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        // Disable level 7 and level 8 on start
+        levelSelector.setEnabled(false, forSegmentAt: 3)
+        levelSelector.setEnabled(false, forSegmentAt: 4)
+        
+        // Set the delegates in code statements
+        gpaInput.delegate = self
+        
         updateGpaInputText()
         updateResultText()
     }
@@ -50,7 +57,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     func updateGpaSelectorValue() {
-        gpaSelector.value = Float(gpaInput.text!)!
+        gpaSelector.value = Float(gpaInput.text!) ?? 0
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -61,12 +68,29 @@ class ViewController: UIViewController, UITextFieldDelegate {
     // Actions
 
     @IBAction func programChanged(_ sender: UISegmentedControl) {
+//        updateResultText()
+        
+        // CPA selected
+        if (sender.selectedSegmentIndex == 0) {
+            levelSelector.setEnabled(false, forSegmentAt: 3)
+            levelSelector.setEnabled(false, forSegmentAt: 4)
+        }
+        // BSD selected
+        else {
+            if (levelSelector.selectedSegmentIndex == 3 || levelSelector.selectedSegmentIndex == 4) {
+                levelSelector.selectedSegmentIndex = 2
+                print(levelSelector.selectedSegmentIndex)
+            }
+            levelSelector.setEnabled(true, forSegmentAt: 3)
+            levelSelector.setEnabled(true, forSegmentAt: 4)
+        }
         updateResultText()
         print("program changed")
     }
     
     @IBAction func levelChanged(_ sender: UISegmentedControl) {
         updateResultText()
+        print(sender.selectedSegmentIndex)
         print("level changed")
     }
     
@@ -79,7 +103,15 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBAction func gpaInputChanged(_ sender: UITextField) {
         updateGpaSelectorValue()
         updateResultText()
+        let gpaInputValue = Float(gpaInput.text!) ?? 0
+        if (gpaInputValue > 4) {
+            gpaInput.text = "4.00"
+        }
+        else if (gpaInputValue < 2) {
+            gpaInput.text = "2.00"
+        }
+        updateGpaInputText()
+        
         print("gpa input changed")
     }
 }
-
