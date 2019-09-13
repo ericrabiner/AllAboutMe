@@ -72,15 +72,15 @@ class ViewController: UIViewController, UITextFieldDelegate {
         
         // CPA selected
         if (sender.selectedSegmentIndex == 0) {
+            if (levelSelector.selectedSegmentIndex == 3 || levelSelector.selectedSegmentIndex == 4) {
+                levelSelector.selectedSegmentIndex = 2
+            }
             levelSelector.setEnabled(false, forSegmentAt: 3)
             levelSelector.setEnabled(false, forSegmentAt: 4)
         }
         // BSD selected
         else {
-            if (levelSelector.selectedSegmentIndex == 3 || levelSelector.selectedSegmentIndex == 4) {
-                levelSelector.selectedSegmentIndex = 2
-                print(levelSelector.selectedSegmentIndex)
-            }
+            
             levelSelector.setEnabled(true, forSegmentAt: 3)
             levelSelector.setEnabled(true, forSegmentAt: 4)
         }
